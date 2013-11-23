@@ -7,9 +7,9 @@ Gem::Specification.new do |spec|
   spec.name          = "acts_as_daterange"
   spec.version       = ActsAsDaterange::VERSION
   spec.authors       = ["Gilad Zohari"]
-  spec.email         = ["gzohari@gmail.com"]
-  spec.description   = %q{foo}
-  spec.summary       = %q{bar}
+  spec.email         = [""]
+  spec.description   = %q{adds daterange to AR models}
+  spec.summary       = %q{adds daterange to AR models}
   spec.homepage      = ""
   spec.license       = "MIT"
 

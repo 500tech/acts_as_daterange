@@ -8,8 +8,12 @@ class ActiveRecord::Base
 end
 
 module ActsAsDaterange
+  #  use default start_date, end_date
   #  acts_as_daterange
+
+  #  set your own custom start_date and end_date
   #  acts_as_daterange :started_at, :ended_at
+  #  or
   #  acts_as_daterange start_date: :started_at, end_date: :ended_at
   def acts_as_expirable(*args, start_date: nil, end_date: nil)
     include Daterange

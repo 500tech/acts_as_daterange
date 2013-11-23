@@ -14,14 +14,12 @@ module Daterange
       daterange_config[:start_column]
     end
 
-    #really?? || too long for scope
     def active
       where("(#{start_column} IS NULL OR #{start_column} <= :now) AND 
             (#{expire_column} IS NULL OR #{expire_column} > :now)",
             now: Time.now)
     end
 
-    #really?? || too long for scope
     def inactive
       where("#{start_column} > :now OR #{expire_column} < :now",
             now: Time.now)
