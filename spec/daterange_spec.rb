@@ -43,11 +43,17 @@ describe Daterange do
       it "isn't .active?" do 
         expect(future_daterange).to_not be_active
       end
-      it "is #inactive" do
-        expect(TestDefaultDaterange.inactive.count).to eq 1
+      it "is #inactive_now" do
+        expect(TestDefaultDaterange.inactive_now.count).to eq 1
       end
-      it "isn't #active" do
-        expect(TestDefaultDaterange.active).to be_empty
+      it "isn't #active_now" do
+        expect(TestDefaultDaterange.active_now).to be_empty
+      end
+      it "isn't #inactive_at tomorrow" do
+        expect(TestDefaultDaterange.inactive_at(Time.now + 1.day)).to be_empty
+      end
+      it "is #active_at tomorrow" do
+        expect(TestDefaultDaterange.active_at(Time.now + 1.day).count).to eq 1
       end
     end
 
@@ -59,11 +65,17 @@ describe Daterange do
       it "is .active?" do 
         expect(active_daterange).to be_active
       end
-      it "is #active" do
-        expect(TestDefaultDaterange.active.count).to eq 1
+      it "is #active_now" do
+        expect(TestDefaultDaterange.active_now.count).to eq 1
       end
-      it "isn't #inactive" do
-        expect(TestDefaultDaterange.inactive).to be_empty
+      it "isn't #inactive_now" do
+        expect(TestDefaultDaterange.inactive_now).to be_empty
+      end
+      it "is #inactive_at tomorrow" do
+        expect(TestDefaultDaterange.inactive_at(Time.now + 200.day).count).to eq 1
+      end
+      it "isn't #active_at tomorrow" do
+        expect(TestDefaultDaterange.active_at(Time.now + 200.day)).to be_empty
       end
     end
 
@@ -71,11 +83,11 @@ describe Daterange do
       before do
         TestDefaultDaterange.create!(title: 'old news buddy!', start_date: Time.now - 100.day, end_date: Time.now - 99.days)
       end
-      it "is #inactive" do
-        expect(TestDefaultDaterange.inactive.count).to eq 1
+      it "is #inactive_now" do
+        expect(TestDefaultDaterange.inactive_now.count).to eq 1
       end
-      it "isn't #active" do
-        expect(TestDefaultDaterange.active).to be_empty
+      it "isn't #active_now" do
+        expect(TestDefaultDaterange.active_now).to be_empty
       end
     end
   end
@@ -83,13 +95,13 @@ describe Daterange do
   describe 'custom daterange' do
     it 'has active items' do
       TestCustomDaterange.create!(title: "i'm special me", promotion_start: Time.now - 2.day, promotion_expire: Time.now + 9.days)
-      expect(TestCustomDaterange.active.count).to eq 1
-      expect(TestCustomDaterange.inactive.count).to eq 0
+      expect(TestCustomDaterange.active_now.count).to eq 1
+      expect(TestCustomDaterange.inactive_now.count).to eq 0
     end
     it 'has inactive items' do
       TestCustomDaterange.create!(title: "i'm special me", promotion_start: Time.now - 12.day, promotion_expire: Time.now - 9.days)
-      expect(TestCustomDaterange.active.count).to eq 0
-      expect(TestCustomDaterange.inactive.count).to eq 1
+      expect(TestCustomDaterange.active_now.count).to eq 0
+      expect(TestCustomDaterange.inactive_now.count).to eq 1
     end
     it 'validates daterange' do
       expect { TestCustomDaterange.create!(title: "That Time-Turner, it was driving me mad. I've handed it in", promotion_start: Time.now + 2.day, promotion_expire: Time.now + 1.days) }.to raise_error(ActiveRecord::RecordInvalid)

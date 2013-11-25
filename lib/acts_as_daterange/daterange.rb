@@ -14,15 +14,23 @@ module Daterange
       daterange_config[:start_column]
     end
 
-    def active
-      where("(#{start_column} IS NULL OR #{start_column} <= :now) AND 
-            (#{expire_column} IS NULL OR #{expire_column} > :now)",
-            now: Time.now)
+    def active_at(time)
+      where("(#{start_column} IS NULL OR #{start_column} <= :time) AND 
+            (#{expire_column} IS NULL OR #{expire_column} > :time)",
+            time: time)
     end
 
-    def inactive
-      where("#{start_column} > :now OR #{expire_column} < :now",
-            now: Time.now)
+    def inactive_at(time)
+      where("#{start_column} > :time OR #{expire_column} < :time",
+            time: time)
+    end
+
+    def active_now
+      active_at(Time.now)
+    end
+
+    def inactive_now
+      inactive_at(Time.now)
     end
   end
 
