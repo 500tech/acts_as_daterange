@@ -1,6 +1,7 @@
 # ActsAsDaterange
 
-TODO: Write a gem description
+This is home to the acts_as_daterange GEM.
+It adds the 'acts_as_daterange' directive to ActiveRecord models, and adds methods, scopes and validations
 
 ## Installation
 
@@ -18,7 +19,55 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Given an AR model, for example Coupon, with start_date and end_date fields:
+```ruby
+class Coupon < ActiveRecord::Base
+  attr_accessible :start_date, :end_date
+  acts_as_daterange
+end
+
+> @coupon = Coupon.create start_date: 3.hours.ago, end_date: 3.hours.from_now
+```
+
+methods:
+```ruby
+> @coupon.active_now?
+> @coupon.started?
+> @coupon.ended?
+```
+
+scopes:
+```ruby
+> Coupon.active_now
+> Coupon.inactive_now
+> Coupon.active_at Date.today
+> Coupon.inactive_at 5.hours.ago
+```
+
+validations:
+```ruby
+> @coupon = Coupon.create start_date: 3.hours.from_now, end_date: 3.hours.ago
+> @coupon.errors[:end_date]
+=> must be after start_date
+```
+
+Notice that:
+- start_date=nil means started? == true always
+- and end_date=nil means that ended? == false always
+
+```ruby
+> Coupon.new.started?
+=> true
+> Coupon.new.ended?
+=> false
+```
+
+You can also override the field names:
+```ruby
+acts_as_daterange :started_at, :ended_at
+#  or
+acts_as_daterange start_date: :started_at, end_date: :ended_at
+```
 
 ## Contributing
 
