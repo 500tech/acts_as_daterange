@@ -1,7 +1,10 @@
 # ActsAsDaterange
 
 This is home to the acts_as_daterange GEM.
-It adds the 'acts_as_daterange' directive to ActiveRecord models, and adds methods, scopes and validations
+
+It's useful for all models that have (optional) start date and end date (e.g. coupons, campaigns, orders, events, etc.)
+
+Just add 'acts_as_daterange' to your ActiveRecord models and get useful validations, methods and scopes.
 
 ## Installation
 
