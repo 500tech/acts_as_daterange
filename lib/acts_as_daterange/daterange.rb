@@ -52,7 +52,7 @@ module Daterange
     update_attribute(expire_column, Time.now)
   end
 
-  def active?
+  def active_now?
     started? and not ended?
   end
 

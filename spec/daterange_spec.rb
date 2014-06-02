@@ -12,26 +12,26 @@ describe Daterange do
     describe '.expire' do
       let(:record) { TestDefaultDaterange.create!(title: 'right now!', start_date: Time.now - 100.day, end_date: Time.now + 100.days) }
       it "expires record" do
-        expect(record).to be_active
+        expect(record).to be_active_now
         record.expire
-        expect(record).to_not be_active
+        expect(record).to_not be_active_now
       end
 
       it "doesn't commit the update" do
-        expect(record).to be_active
+        expect(record).to be_active_now
         record.expire
         record.reload
-        expect(record).to be_active
+        expect(record).to be_active_now
       end
     end
     describe '.expire!' do
       let(:record) { TestDefaultDaterange.create!(title: 'right now!', start_date: Time.now - 100.day, end_date: Time.now + 100.days) }
       it "commits the expiration" do
-        expect(record).to be_active
+        expect(record).to be_active_now
         record.expire!
-        expect(record).to_not be_active
+        expect(record).to_not be_active_now
         record.reload
-        expect(record).to_not be_active
+        expect(record).to_not be_active_now
       end
     end
 
@@ -40,8 +40,8 @@ describe Daterange do
         TestDefaultDaterange.create!(title: 'future', start_date: Time.now + 1.day, end_date: Time.now + 2.days)
       end
       let(:future_daterange) { TestDefaultDaterange.first }
-      it "isn't .active?" do 
-        expect(future_daterange).to_not be_active
+      it "isn't .active_now?" do 
+        expect(future_daterange).to_not be_active_now
       end
       it "is #inactive_now" do
         expect(TestDefaultDaterange.inactive_now.count).to eq 1
@@ -62,8 +62,8 @@ describe Daterange do
         TestDefaultDaterange.create!(title: 'right now!', start_date: Time.now - 100.day, end_date: Time.now + 100.days)
       end
       let(:active_daterange) { TestDefaultDaterange.first }
-      it "is .active?" do 
-        expect(active_daterange).to be_active
+      it "is .active_now?" do 
+        expect(active_daterange).to be_active_now
       end
       it "is #active_now" do
         expect(TestDefaultDaterange.active_now.count).to eq 1
